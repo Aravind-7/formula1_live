@@ -5,6 +5,10 @@ import { SessionListSkeleton } from "@/components/SessionListSkeleton";
 import { SessionSelectorList } from "@/components/SessionSelectorList";
 import { findLiveSession, joinSessionsWithMeetings } from "@/lib/sessions";
 
+// Live/recent session data must reflect the current moment on every
+// request — never freeze it into a static build-time snapshot.
+export const dynamic = "force-dynamic";
+
 async function SessionSelectorContent() {
   const client = new OpenF1Client();
   const year = new Date().getFullYear();

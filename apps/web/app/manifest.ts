@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
+import { colors } from "@f1-dashboard/tokens";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "F1 Dashboard",
     short_name: "F1 Dashboard",
     display: "standalone",
-    background_color: "#0A0A0A",
-    theme_color: "#0A0A0A",
+    background_color: colors.bgBase,
+    theme_color: colors.bgBase,
     icons: [
       {
         src: "/icon-192.png",
