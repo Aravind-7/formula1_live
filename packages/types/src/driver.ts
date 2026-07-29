@@ -1,4 +1,3 @@
-// Stub — fleshed out in Stage 2/3 once timing and driver detail screens are built.
 export interface Driver {
   driver_number: number;
   broadcast_name: string;
