@@ -23,6 +23,9 @@ importers:
       '@f1-dashboard/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
+      '@f1-dashboard/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
       '@f1-dashboard/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens

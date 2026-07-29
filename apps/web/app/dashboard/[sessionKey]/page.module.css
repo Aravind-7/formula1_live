@@ -1,0 +1,42 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "leaderboard"
+    "weather"
+    "fastestlap"
+    "tires"
+    "radio";
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      "leaderboard weather"
+      "leaderboard fastestlap"
+      "tires tires"
+      "radio radio";
+  }
+}
+
+.leaderboard {
+  grid-area: leaderboard;
+}
+
+.weather {
+  grid-area: weather;
+}
+
+.fastestlap {
+  grid-area: fastestlap;
+}
+
+.tires {
+  grid-area: tires;
+}
+
+.radio {
+  grid-area: radio;
+}

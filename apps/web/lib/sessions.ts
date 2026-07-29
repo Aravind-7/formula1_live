@@ -15,14 +15,18 @@ export function joinSessionsWithMeetings(
     .sort((a, b) => new Date(b.date_start).getTime() - new Date(a.date_start).getTime());
 }
 
+export function isSessionLive(
+  session: Pick<Session, "date_start" | "date_end"> | undefined,
+): boolean {
+  if (!session) return false;
+  const now = Date.now();
+  const start = new Date(session.date_start).getTime();
+  const end = session.date_end ? new Date(session.date_end).getTime() : undefined;
+  return start <= now && (end === undefined || end > now);
+}
+
 export function findLiveSession(
   sessions: SessionWithMeeting[],
 ): SessionWithMeeting | undefined {
-  const now = Date.now();
-
-  return sessions.find((session) => {
-    const start = new Date(session.date_start).getTime();
-    const end = session.date_end ? new Date(session.date_end).getTime() : undefined;
-    return start <= now && (end === undefined || end > now);
-  });
+  return sessions.find(isSessionLive);
 }
