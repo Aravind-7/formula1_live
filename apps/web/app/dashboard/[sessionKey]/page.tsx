@@ -2,7 +2,12 @@
 
 import { useParams } from "next/navigation";
 import { useSession } from "@f1-dashboard/hooks";
+import { FastestLapCard } from "@/components/FastestLapCard";
+import { LeaderboardTable } from "@/components/LeaderboardTable";
 import { LiveIndicator } from "@/components/LiveIndicator";
+import { TeamRadioFeed } from "@/components/TeamRadioFeed";
+import { TireStrategyCard } from "@/components/TireStrategyCard";
+import { WeatherWidget } from "@/components/WeatherWidget";
 import { isSessionLive } from "@/lib/sessions";
 import styles from "./page.module.css";
 
@@ -39,11 +44,21 @@ export default function DashboardPage() {
         </div>
 
         <div className={styles.grid}>
-          <div className={`${styles.leaderboard} ${CARD_CLASS}`} />
-          <div className={`${styles.weather} ${CARD_CLASS}`} />
-          <div className={`${styles.fastestlap} ${CARD_CLASS}`} />
-          <div className={`${styles.tires} ${CARD_CLASS}`} />
-          <div className={`${styles.radio} ${CARD_CLASS}`} />
+          <div className={`${styles.leaderboard} ${CARD_CLASS}`}>
+            <LeaderboardTable sessionKey={sessionKey} live={live} />
+          </div>
+          <div className={`${styles.weather} ${CARD_CLASS}`}>
+            <WeatherWidget sessionKey={sessionKey} live={live} />
+          </div>
+          <div className={`${styles.fastestlap} ${CARD_CLASS}`}>
+            <FastestLapCard sessionKey={sessionKey} live={live} />
+          </div>
+          <div className={`${styles.tires} ${CARD_CLASS}`}>
+            <TireStrategyCard sessionKey={sessionKey} live={live} />
+          </div>
+          <div className={`${styles.radio} ${CARD_CLASS}`}>
+            <TeamRadioFeed sessionKey={sessionKey} live={live} />
+          </div>
         </div>
       </div>
     </main>
