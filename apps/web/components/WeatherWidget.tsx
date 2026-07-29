@@ -1,0 +1,38 @@
+"use client";
+
+import { useWeather } from "@f1-dashboard/hooks";
+
+export function WeatherWidget({ sessionKey, live }: { sessionKey: number; live: boolean }) {
+  const { data } = useWeather(sessionKey, { enabled: live });
+  const latest = data?.at(-1);
+
+  return (
+    <div className="flex h-full flex-col gap-sm">
+      <h3 className="text-sm font-medium text-text-muted">Weather</h3>
+      {!latest ? (
+        <p className="text-sm text-text-muted">No weather data.</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-sm text-sm">
+          <div>
+            <p className="text-text-muted">Track</p>
+            <p className="text-text-primary">{latest.track_temperature.toFixed(1)}°C</p>
+          </div>
+          <div>
+            <p className="text-text-muted">Air</p>
+            <p className="text-text-primary">{latest.air_temperature.toFixed(1)}°C</p>
+          </div>
+          <div>
+            <p className="text-text-muted">Wind</p>
+            <p className="text-text-primary">{latest.wind_speed.toFixed(1)} m/s</p>
+          </div>
+          <div>
+            <p className="text-text-muted">Rain</p>
+            <p className={latest.rainfall ? "text-signal-amber" : "text-text-primary"}>
+              {latest.rainfall ? "Yes" : "No"}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
