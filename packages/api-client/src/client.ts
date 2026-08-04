@@ -1,7 +1,9 @@
 import type {
+  CarData,
   Driver,
   Interval,
   Lap,
+  Location,
   Meeting,
   Position,
   Session,
@@ -85,5 +87,13 @@ export class OpenF1Client {
 
   async getTeamRadio(params: SessionScopedParams): Promise<TeamRadio[]> {
     return openF1Fetch<TeamRadio[]>(`${BASE_URL}/team_radio${toQueryString(params)}`);
+  }
+
+  async getLocations(params: SessionScopedParams): Promise<Location[]> {
+    return openF1Fetch<Location[]>(`${BASE_URL}/location${toQueryString(params)}`);
+  }
+
+  async getCarData(params: SessionScopedParams): Promise<CarData[]> {
+    return openF1Fetch<CarData[]>(`${BASE_URL}/car_data${toQueryString(params)}`);
   }
 }
