@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { scaleLinear } from "d3-scale";
-import { useDrivers, useLocations, usePositions } from "@f1-dashboard/hooks";
+import { useDrivers, useLocations, usePositions, useSession, useTrackOutline } from "@f1-dashboard/hooks";
 import { driverMap, latestByDriver } from "@/lib/telemetry";
 import { DriverDot } from "./DriverDot";
 import { DriverTooltip } from "./DriverTooltip";
@@ -18,22 +18,37 @@ export interface TrackMapProps {
   onSelectDriver: (driverNumber: number) => void;
 }
 
+function hasSignal(point: { x: number; y: number }): boolean {
+  return point.x !== 0 || point.y !== 0;
+}
+
 export function TrackMap({
   sessionKey,
   live,
   selectedDriverNumber,
   onSelectDriver,
 }: TrackMapProps) {
-  // Unlike Stage 2's cards, the track map fetches once even for a historical
-  // session (per the doc's "live or replay" requirement) — only the ongoing
-  // polling interval is gated on `live`, not the initial fetch.
-  const { data: locations } = useLocations(sessionKey, {
-    refetchInterval: live ? 4000 : false,
-  });
+  const { data: session } = useSession(sessionKey);
   const { data: drivers } = useDrivers(sessionKey);
   const { data: positions } = usePositions(sessionKey, {
     refetchInterval: live ? 5000 : false,
   });
+
+  // Live cars: a short recent window across every driver (the endpoint
+  // rejects unfiltered/whole-session requests outright).
+  const { data: locations } = useLocations(sessionKey, {
+    live,
+    anchorDate: session?.date_end,
+  });
+
+  // Track shape: one driver's path over roughly a lap from session start —
+  // fetched once, not polled, since the circuit itself never changes.
+  const outlineDriverNumber = drivers?.[0]?.driver_number;
+  const { data: outlinePoints } = useTrackOutline(
+    sessionKey,
+    outlineDriverNumber,
+    session?.date_start,
+  );
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredDriverNumber, setHoveredDriverNumber] = useState<number | undefined>();
@@ -41,15 +56,21 @@ export function TrackMap({
 
   const driversByNumber = useMemo(() => driverMap(drivers), [drivers]);
   const latestPositions = useMemo(() => latestByDriver(positions), [positions]);
-  const latestLocations = useMemo(() => latestByDriver(locations), [locations]);
+  const latestLocations = useMemo(
+    () => latestByDriver(locations?.filter(hasSignal)),
+    [locations],
+  );
 
   const { xScale, yScale, trackPath } = useMemo(() => {
-    if (!locations || locations.length === 0) {
+    const validOutline = (outlinePoints ?? []).filter(hasSignal);
+    const domainPoints = validOutline.length > 0 ? validOutline : Array.from(latestLocations.values());
+
+    if (domainPoints.length === 0) {
       return { xScale: undefined, yScale: undefined, trackPath: "" };
     }
 
-    const xs = locations.map((point) => point.x);
-    const ys = locations.map((point) => point.y);
+    const xs = domainPoints.map((point) => point.x);
+    const ys = domainPoints.map((point) => point.y);
 
     const xScale = scaleLinear()
       .domain([Math.min(...xs), Math.max(...xs)])
@@ -59,17 +80,15 @@ export function TrackMap({
       .domain([Math.min(...ys), Math.max(...ys)])
       .range([VIEWBOX_HEIGHT - PADDING, PADDING]);
 
-    const outlineDriverNumber = locations[0].driver_number;
-    const outlinePoints = locations
-      .filter((point) => point.driver_number === outlineDriverNumber)
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-    const trackPath = outlinePoints
+    const sortedOutline = [...validOutline].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    );
+    const trackPath = sortedOutline
       .map((point) => `${xScale(point.x)},${yScale(point.y)}`)
       .join(" ");
 
     return { xScale, yScale, trackPath };
-  }, [locations]);
+  }, [outlinePoints, latestLocations]);
 
   if (!xScale || !yScale) {
     return (
