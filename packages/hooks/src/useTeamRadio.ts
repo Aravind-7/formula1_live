@@ -4,7 +4,7 @@ import { useLiveSession, type UseLiveSessionOptions } from "./useLiveSession";
 
 export function useTeamRadio(
   sessionKey: number,
-  options: UseLiveSessionOptions = {},
+  options: UseLiveSessionOptions<TeamRadio[]> = {},
 ): UseQueryResult<TeamRadio[]> {
   return useLiveSession(
     ["team_radio", sessionKey],

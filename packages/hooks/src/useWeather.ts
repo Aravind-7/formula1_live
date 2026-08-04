@@ -4,7 +4,7 @@ import { useLiveSession, type UseLiveSessionOptions } from "./useLiveSession";
 
 export function useWeather(
   sessionKey: number,
-  options: UseLiveSessionOptions = {},
+  options: UseLiveSessionOptions<Weather[]> = {},
 ): UseQueryResult<Weather[]> {
   return useLiveSession(
     ["weather", sessionKey],

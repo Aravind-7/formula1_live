@@ -5,7 +5,7 @@ import { useLiveSession, type UseLiveSessionOptions } from "./useLiveSession";
 export function useLaps(
   sessionKey: number,
   driverNumber?: number,
-  options: UseLiveSessionOptions = {},
+  options: UseLiveSessionOptions<Lap[]> = {},
 ): UseQueryResult<Lap[]> {
   return useLiveSession(
     ["laps", sessionKey, driverNumber],

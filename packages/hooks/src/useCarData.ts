@@ -14,7 +14,7 @@ export interface UseCarDataParams {
 export function useCarData(
   sessionKey: number,
   { driverNumber, dateFrom, dateTo }: UseCarDataParams,
-  options: UseLiveSessionOptions = {},
+  options: UseLiveSessionOptions<CarData[]> = {},
 ): UseQueryResult<CarData[]> {
   return useLiveSession(
     ["car_data", sessionKey, driverNumber, dateFrom, dateTo],

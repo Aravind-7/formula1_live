@@ -4,7 +4,7 @@ import { useLiveSession, type UseLiveSessionOptions } from "./useLiveSession";
 
 export function useStints(
   sessionKey: number,
-  options: UseLiveSessionOptions = {},
+  options: UseLiveSessionOptions<Stint[]> = {},
 ): UseQueryResult<Stint[]> {
   return useLiveSession(
     ["stints", sessionKey],

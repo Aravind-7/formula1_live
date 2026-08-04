@@ -14,7 +14,7 @@ export interface UseLocationsParams {
 export function useLocations(
   sessionKey: number,
   { live, anchorDate, windowSeconds = 15 }: UseLocationsParams,
-  options: UseLiveSessionOptions = {},
+  options: UseLiveSessionOptions<Location[]> = {},
 ): UseQueryResult<Location[]> {
   return useLiveSession(
     ["locations", sessionKey, live, anchorDate, windowSeconds],

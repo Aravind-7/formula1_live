@@ -4,7 +4,7 @@ import { useLiveSession, type UseLiveSessionOptions } from "./useLiveSession";
 
 export function useIntervals(
   sessionKey: number,
-  options: UseLiveSessionOptions = {},
+  options: UseLiveSessionOptions<Interval[]> = {},
 ): UseQueryResult<Interval[]> {
   return useLiveSession(
     ["intervals", sessionKey],

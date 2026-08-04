@@ -4,7 +4,7 @@ import { useLiveSession, type UseLiveSessionOptions } from "./useLiveSession";
 
 export function usePositions(
   sessionKey: number,
-  options: UseLiveSessionOptions = {},
+  options: UseLiveSessionOptions<Position[]> = {},
 ): UseQueryResult<Position[]> {
   return useLiveSession(
     ["positions", sessionKey],

@@ -11,7 +11,7 @@ export function useTrackOutline(
   sessionKey: number,
   driverNumber: number | undefined,
   sessionStartDate: string | null | undefined,
-  options: UseLiveSessionOptions = {},
+  options: UseLiveSessionOptions<Location[]> = {},
 ): UseQueryResult<Location[]> {
   return useLiveSession(
     ["track_outline", sessionKey, driverNumber],
