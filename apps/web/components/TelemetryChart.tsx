@@ -10,6 +10,8 @@ export interface TelemetryChartProps {
   metric: TelemetryMetric;
   data: CarData[];
   color: string;
+  /** Shared Y-axis domain so two drivers' charts are visually comparable. */
+  domain?: [number, number];
 }
 
 const METRIC_LABEL: Record<TelemetryMetric, string> = {
@@ -18,11 +20,17 @@ const METRIC_LABEL: Record<TelemetryMetric, string> = {
   rpm: "RPM",
 };
 
+// Normalized to % of lap elapsed (not raw seconds) so two drivers' traces —
+// who take different amounts of time to complete the lap — line up at the
+// same track position rather than the same wall-clock offset.
 function toChartData(data: CarData[]) {
   if (data.length === 0) return [];
   const startTime = new Date(data[0].date).getTime();
+  const endTime = new Date(data[data.length - 1].date).getTime();
+  const span = endTime - startTime || 1;
+
   return data.map((point) => ({
-    t: (new Date(point.date).getTime() - startTime) / 1000,
+    t: ((new Date(point.date).getTime() - startTime) / span) * 100,
     speed: point.speed,
     throttle: point.throttle,
     brake: point.brake,
@@ -30,8 +38,9 @@ function toChartData(data: CarData[]) {
   }));
 }
 
-export function TelemetryChart({ metric, data, color }: TelemetryChartProps) {
+export function TelemetryChart({ metric, data, color, domain }: TelemetryChartProps) {
   const chartData = toChartData(data);
+  const yDomain = domain ?? (metric === "throttle_brake" ? [0, 100] : ["auto", "auto"]);
 
   return (
     <div className="flex flex-col gap-xs">
@@ -51,15 +60,15 @@ export function TelemetryChart({ metric, data, color }: TelemetryChartProps) {
       <div className="h-24 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
-            <XAxis dataKey="t" hide type="number" domain={["dataMin", "dataMax"]} />
-            <YAxis hide domain={["auto", "auto"]} />
+            <XAxis dataKey="t" hide type="number" domain={[0, 100]} />
+            <YAxis hide domain={yDomain} />
             <Tooltip
               contentStyle={{
                 backgroundColor: colors.bgPanel,
                 border: `1px solid ${colors.borderHairline}`,
                 fontSize: 12,
               }}
-              labelFormatter={(t) => `${Number(t).toFixed(1)}s`}
+              labelFormatter={(t) => `${Number(t).toFixed(0)}% of lap`}
             />
             {metric === "throttle_brake" ? (
               <>
