@@ -7,6 +7,10 @@ export interface UseReplayClockOptions {
   speed?: number;
   /** How often (ms) the replay window advances. */
   tickMs?: number;
+  /** Gate the historical fetch itself — hooks that call this unconditionally
+   * (required, since hooks can't be called conditionally) still shouldn't
+   * fire the fetch when replay mode is off. Defaults to true. */
+  enabled?: boolean;
 }
 
 export interface ReplayClockResult<T> {
@@ -28,13 +32,13 @@ export function useReplayClock<T extends { date: string }>(
   fetcher: Fetcher<T>,
   options: UseReplayClockOptions = {},
 ): ReplayClockResult<T> {
-  const { speed = 10, tickMs = 1000 } = options;
+  const { speed = 10, tickMs = 1000, enabled = true } = options;
 
   const fullQuery = useQuery({
     queryKey: ["replay-source", ...queryKey],
     queryFn: () => fetcher(openF1Client, sessionKey),
     staleTime: Infinity,
-    enabled: Boolean(sessionKey),
+    enabled: enabled && Boolean(sessionKey),
   });
 
   const [elapsedMs, setElapsedMs] = useState(0);
