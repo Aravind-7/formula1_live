@@ -11,7 +11,7 @@ export interface DriverDotProps {
   isSelected: boolean;
   isHovered: boolean;
   hasSelection: boolean;
-  onHoverStart: () => void;
+  onHoverStart: (event: React.MouseEvent<SVGCircleElement>) => void;
   onHoverEnd: () => void;
   onClick: () => void;
 }

@@ -15,12 +15,14 @@
     "@f1-dashboard/tokens": "workspace:*",
     "@f1-dashboard/types": "workspace:*",
     "@tanstack/react-query": "^5.101.4",
+    "d3-scale": "^4.0.2",
     "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18",
     "recharts": "^3.10.1"
   },
   "devDependencies": {
+    "@types/d3-scale": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

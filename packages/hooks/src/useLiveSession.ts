@@ -2,7 +2,7 @@ import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 import { openF1Client } from "./client";
 
 export interface UseLiveSessionOptions {
-  refetchInterval?: number;
+  refetchInterval?: number | false;
   enabled?: boolean;
 }
 
