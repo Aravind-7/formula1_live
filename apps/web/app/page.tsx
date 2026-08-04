@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { OpenF1Client } from "@f1-dashboard/api-client";
 import { LiveBanner } from "@/components/LiveBanner";
+import { ReplayModeToggle } from "@/components/ReplayModeToggle";
 import { SessionListSkeleton } from "@/components/SessionListSkeleton";
 import { SessionSelectorList } from "@/components/SessionSelectorList";
 import { findLiveSession, joinSessionsWithMeetings } from "@/lib/sessions";
@@ -23,6 +24,7 @@ async function SessionSelectorContent() {
   return (
     <>
       {liveSession && <LiveBanner session={liveSession} />}
+      {!liveSession && <ReplayModeToggle sessions={joined} />}
       <h2 className="text-lg text-text-primary">Recent sessions</h2>
       <SessionSelectorList sessions={joined} />
     </>
