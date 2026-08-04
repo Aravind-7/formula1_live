@@ -7,3 +7,5 @@ export * from "./lap";
 export * from "./weather";
 export * from "./stint";
 export * from "./team-radio";
+export * from "./location";
+export * from "./car-data";
