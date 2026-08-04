@@ -15,3 +15,4 @@ export * from "./useReplayClock";
 export * from "./useReplaySource";
 export * from "./usePitStops";
 export * from "./useRaceControl";
+export * from "./useDriverLocationHistory";
