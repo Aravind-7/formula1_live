@@ -11,3 +11,4 @@ export * from "./sessionStore";
 export * from "./useLocations";
 export * from "./useTrackOutline";
 export * from "./useCarData";
+export * from "./useReplayClock";

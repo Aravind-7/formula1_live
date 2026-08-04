@@ -1,0 +1,71 @@
+import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { openF1Client } from "./client";
+
+export interface UseReplayClockOptions {
+  /** Playback multiplier — 10 means 10x real-time. */
+  speed?: number;
+  /** How often (ms) the replay window advances. */
+  tickMs?: number;
+}
+
+export interface ReplayClockResult<T> {
+  data: T[];
+  isLoading: boolean;
+  /** 0-1, how far through the historical dataset the replay window is. */
+  progress: number;
+}
+
+type Fetcher<T> = (client: typeof openF1Client, sessionKey: number) => Promise<T[]>;
+
+// Fetches a full historical dataset once, then re-emits it in growing
+// time-sliced windows on an interval — simulating the same data shape the
+// live polling hooks would produce, so the rest of the app can't tell the
+// difference between "live" and "replayed".
+export function useReplayClock<T extends { date: string }>(
+  queryKey: readonly unknown[],
+  sessionKey: number,
+  fetcher: Fetcher<T>,
+  options: UseReplayClockOptions = {},
+): ReplayClockResult<T> {
+  const { speed = 10, tickMs = 1000 } = options;
+
+  const fullQuery = useQuery({
+    queryKey: ["replay-source", ...queryKey],
+    queryFn: () => fetcher(openF1Client, sessionKey),
+    staleTime: Infinity,
+    enabled: Boolean(sessionKey),
+  });
+
+  const [elapsedMs, setElapsedMs] = useState(0);
+
+  useEffect(() => {
+    setElapsedMs(0);
+    if (!fullQuery.data || fullQuery.data.length === 0) return undefined;
+
+    const id = setInterval(() => {
+      setElapsedMs((prev) => prev + tickMs * speed);
+    }, tickMs);
+
+    return () => clearInterval(id);
+  }, [fullQuery.data, tickMs, speed]);
+
+  return useMemo(() => {
+    const all = fullQuery.data ?? [];
+    if (all.length === 0) {
+      return { data: [], isLoading: fullQuery.isLoading, progress: 0 };
+    }
+
+    const timestamps = all.map((item) => new Date(item.date).getTime());
+    const startTime = Math.min(...timestamps);
+    const endTime = Math.max(...timestamps);
+    const span = Math.max(endTime - startTime, 1);
+    const windowEnd = startTime + elapsedMs;
+
+    return {
+      data: all.filter((item) => new Date(item.date).getTime() <= windowEnd),
+      isLoading: fullQuery.isLoading,
+      progress: Math.min(1, elapsedMs / span),
+    };
+  }, [fullQuery.data, fullQuery.isLoading, elapsedMs]);
+}
