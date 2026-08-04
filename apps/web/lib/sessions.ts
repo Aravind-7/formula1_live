@@ -30,3 +30,13 @@ export function findLiveSession(
 ): SessionWithMeeting | undefined {
   return sessions.find(isSessionLive);
 }
+
+// Only finished sessions have historical data worth replaying — a scheduled
+// future session (common when browsing "recent sessions" mid-season) has none.
+export function isSessionPast(
+  session: Pick<Session, "date_start" | "date_end">,
+): boolean {
+  const now = Date.now();
+  const end = session.date_end ? new Date(session.date_end).getTime() : new Date(session.date_start).getTime();
+  return end < now;
+}

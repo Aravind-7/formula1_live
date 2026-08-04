@@ -3,20 +3,24 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSessionStore } from "@f1-dashboard/hooks";
+import { isSessionPast } from "@/lib/sessions";
 import type { SessionWithMeeting } from "@/lib/types";
 
 export function ReplayModeToggle({ sessions }: { sessions: SessionWithMeeting[] }) {
   const router = useRouter();
   const setSession = useSessionStore((state) => state.setSession);
   const setReplayMode = useSessionStore((state) => state.setReplayMode);
+  const pastSessions = sessions.filter(isSessionPast);
   const [selectedKey, setSelectedKey] = useState(
-    sessions[0] ? String(sessions[0].session_key) : "",
+    pastSessions[0] ? String(pastSessions[0].session_key) : "",
   );
 
-  if (sessions.length === 0) return null;
+  if (pastSessions.length === 0) return null;
 
   const startReplay = () => {
-    const session = sessions.find((candidate) => String(candidate.session_key) === selectedKey);
+    const session = pastSessions.find(
+      (candidate) => String(candidate.session_key) === selectedKey,
+    );
     if (!session) return;
 
     setSession(session);
@@ -34,7 +38,7 @@ export function ReplayModeToggle({ sessions }: { sessions: SessionWithMeeting[] 
         onChange={(event) => setSelectedKey(event.target.value)}
         className="rounded border border-border-hairline bg-bg-base px-sm py-xs text-sm text-text-primary"
       >
-        {sessions.map((session) => (
+        {pastSessions.map((session) => (
           <option key={session.session_key} value={session.session_key}>
             {session.meeting_name} — {session.session_name}
           </option>
