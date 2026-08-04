@@ -7,7 +7,7 @@ export function useIntervals(
   options: UseLiveSessionOptions = {},
 ): UseQueryResult<Interval[]> {
   return useLiveSession(
-    "intervals",
+    ["intervals", sessionKey],
     sessionKey,
     (client, key) => client.getIntervals({ session_key: key }),
     { refetchInterval: 5000, ...options },

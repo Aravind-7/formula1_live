@@ -7,7 +7,7 @@ export function usePositions(
   options: UseLiveSessionOptions = {},
 ): UseQueryResult<Position[]> {
   return useLiveSession(
-    "positions",
+    ["positions", sessionKey],
     sessionKey,
     (client, key) => client.getPositions({ session_key: key }),
     { refetchInterval: 5000, ...options },

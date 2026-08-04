@@ -7,7 +7,7 @@ export function useWeather(
   options: UseLiveSessionOptions = {},
 ): UseQueryResult<Weather[]> {
   return useLiveSession(
-    "weather",
+    ["weather", sessionKey],
     sessionKey,
     (client, key) => client.getWeather({ session_key: key }),
     { refetchInterval: 60000, ...options },

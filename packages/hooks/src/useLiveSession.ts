@@ -9,7 +9,7 @@ export interface UseLiveSessionOptions {
 type Fetcher<T> = (client: typeof openF1Client, sessionKey: number) => Promise<T>;
 
 export function useLiveSession<T>(
-  queryKeyPrefix: string,
+  queryKey: readonly unknown[],
   sessionKey: number,
   fetcher: Fetcher<T>,
   options: UseLiveSessionOptions = {},
@@ -17,7 +17,7 @@ export function useLiveSession<T>(
   const { refetchInterval = 5000, enabled = true } = options;
 
   return useQuery({
-    queryKey: [queryKeyPrefix, sessionKey],
+    queryKey,
     queryFn: () => fetcher(openF1Client, sessionKey),
     refetchInterval,
     enabled: enabled && Boolean(sessionKey),

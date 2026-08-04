@@ -7,7 +7,7 @@ export function useTeamRadio(
   options: UseLiveSessionOptions = {},
 ): UseQueryResult<TeamRadio[]> {
   return useLiveSession(
-    "team_radio",
+    ["team_radio", sessionKey],
     sessionKey,
     (client, key) => client.getTeamRadio({ session_key: key }),
     { refetchInterval: 20000, ...options },

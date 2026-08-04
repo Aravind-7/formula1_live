@@ -7,7 +7,7 @@ export function useStints(
   options: UseLiveSessionOptions = {},
 ): UseQueryResult<Stint[]> {
   return useLiveSession(
-    "stints",
+    ["stints", sessionKey],
     sessionKey,
     (client, key) => client.getStints({ session_key: key }),
     { refetchInterval: 30000, ...options },

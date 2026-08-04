@@ -7,7 +7,7 @@ export function useLaps(
   options: UseLiveSessionOptions = {},
 ): UseQueryResult<Lap[]> {
   return useLiveSession(
-    "laps",
+    ["laps", sessionKey],
     sessionKey,
     (client, key) => client.getLaps({ session_key: key }),
     { refetchInterval: 10000, ...options },
