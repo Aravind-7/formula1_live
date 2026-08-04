@@ -13,3 +13,5 @@ export * from "./useTrackOutline";
 export * from "./useCarData";
 export * from "./useReplayClock";
 export * from "./useReplaySource";
+export * from "./usePitStops";
+export * from "./useRaceControl";
