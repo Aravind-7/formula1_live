@@ -9,6 +9,7 @@ import {
   useLaps,
   usePositions,
   useSession,
+  useSessionStore,
 } from "@f1-dashboard/hooks";
 import type { CarData, Driver, Lap } from "@f1-dashboard/types";
 import { colors } from "@f1-dashboard/tokens";
@@ -16,6 +17,7 @@ import { DriverCompareToggle } from "@/components/DriverCompareToggle";
 import { DriverHeader } from "@/components/DriverHeader";
 import { LapTimeChart } from "@/components/LapTimeChart";
 import { LiveIndicator } from "@/components/LiveIndicator";
+import { ReplayBadge } from "@/components/ReplayBadge";
 import { TelemetryChart } from "@/components/TelemetryChart";
 import { isSessionLive } from "@/lib/sessions";
 import { driverMap, latestByDriver, teamColor } from "@/lib/telemetry";
@@ -106,6 +108,7 @@ export default function DriverDetailPage() {
 
   const { data: session } = useSession(sessionKey);
   const live = isSessionLive(session);
+  const replayMode = useSessionStore((state) => state.replayMode);
 
   const { data: drivers } = useDrivers(sessionKey);
   const { data: positions } = usePositions(sessionKey, { refetchInterval: live ? 5000 : false });
@@ -139,6 +142,7 @@ export default function DriverDetailPage() {
         <div className="flex items-center justify-between gap-md">
           <div className="flex items-center gap-sm">
             {live && <LiveIndicator />}
+            {!live && replayMode && <ReplayBadge />}
             <h1 className="text-lg font-medium text-text-primary">
               {session?.session_name ?? "Loading session…"} — Driver Detail
             </h1>

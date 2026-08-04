@@ -1,10 +1,11 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useSession } from "@f1-dashboard/hooks";
+import { useSession, useSessionStore } from "@f1-dashboard/hooks";
 import { FastestLapCard } from "@/components/FastestLapCard";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
 import { LiveIndicator } from "@/components/LiveIndicator";
+import { ReplayBadge } from "@/components/ReplayBadge";
 import { TeamRadioFeed } from "@/components/TeamRadioFeed";
 import { TireStrategyCard } from "@/components/TireStrategyCard";
 import { WeatherWidget } from "@/components/WeatherWidget";
@@ -18,6 +19,7 @@ export default function DashboardPage() {
   const sessionKey = Number(params.sessionKey);
   const { data: session } = useSession(sessionKey);
   const live = isSessionLive(session);
+  const replayMode = useSessionStore((state) => state.replayMode);
 
   return (
     <main className="min-h-screen bg-bg-base px-lg py-2xl">
@@ -25,6 +27,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between gap-md">
           <div className="flex items-center gap-sm">
             {live && <LiveIndicator />}
+            {!live && replayMode && <ReplayBadge />}
             <div>
               <h1 className="text-lg font-medium text-text-primary">
                 {session?.session_name ?? "Loading session…"}

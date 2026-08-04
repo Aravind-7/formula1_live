@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useDrivers, usePositions, useSession } from "@f1-dashboard/hooks";
+import { useDrivers, usePositions, useSession, useSessionStore } from "@f1-dashboard/hooks";
 import { LiveIndicator } from "@/components/LiveIndicator";
+import { ReplayBadge } from "@/components/ReplayBadge";
 import { TrackMap } from "@/components/TrackMap";
 import { TrackOverlayPanel } from "@/components/TrackOverlayPanel";
 import { isSessionLive } from "@/lib/sessions";
@@ -17,6 +18,7 @@ export default function TrackPage() {
 
   const { data: session } = useSession(sessionKey);
   const live = isSessionLive(session);
+  const replayMode = useSessionStore((state) => state.replayMode);
 
   const selectedDriverParam = searchParams.get("driver");
   const selectedDriverNumber = selectedDriverParam ? Number(selectedDriverParam) : undefined;
@@ -47,6 +49,7 @@ export default function TrackPage() {
     <main className="flex h-screen flex-col bg-bg-base">
       <div className="flex items-center gap-sm border-b border-border-hairline px-lg py-md">
         {live && <LiveIndicator />}
+        {!live && replayMode && <ReplayBadge />}
         <h1 className="text-lg font-medium text-text-primary">
           {session?.session_name ?? "Loading session…"} — Track Map
         </h1>
