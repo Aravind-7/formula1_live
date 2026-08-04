@@ -9,7 +9,7 @@ import { formatLapTime } from "@/lib/format";
 import { driverMap } from "@/lib/telemetry";
 
 export function FastestLapCard({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const { data: laps } = useLaps(sessionKey, { enabled: live });
+  const { data: laps } = useLaps(sessionKey, undefined, { enabled: live });
   const { data: drivers } = useDrivers(sessionKey);
   const driversByNumber = useMemo(() => driverMap(drivers), [drivers]);
 

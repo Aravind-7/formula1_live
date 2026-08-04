@@ -4,12 +4,13 @@ import { useLiveSession, type UseLiveSessionOptions } from "./useLiveSession";
 
 export function useLaps(
   sessionKey: number,
+  driverNumber?: number,
   options: UseLiveSessionOptions = {},
 ): UseQueryResult<Lap[]> {
   return useLiveSession(
-    ["laps", sessionKey],
+    ["laps", sessionKey, driverNumber],
     sessionKey,
-    (client, key) => client.getLaps({ session_key: key }),
+    (client, key) => client.getLaps({ session_key: key, driver_number: driverNumber }),
     { refetchInterval: 10000, ...options },
   );
 }
