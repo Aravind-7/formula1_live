@@ -9,3 +9,5 @@ export * from "./stint";
 export * from "./team-radio";
 export * from "./location";
 export * from "./car-data";
+export * from "./pit-stop";
+export * from "./race-control";

@@ -5,7 +5,9 @@ import type {
   Lap,
   Location,
   Meeting,
+  PitStop,
   Position,
+  RaceControlMessage,
   Session,
   Stint,
   TeamRadio,
@@ -95,5 +97,13 @@ export class OpenF1Client {
 
   async getCarData(params: SessionScopedParams): Promise<CarData[]> {
     return openF1Fetch<CarData[]>(`${BASE_URL}/car_data${toQueryString(params)}`);
+  }
+
+  async getPitStops(params: SessionScopedParams): Promise<PitStop[]> {
+    return openF1Fetch<PitStop[]>(`${BASE_URL}/pit${toQueryString(params)}`);
+  }
+
+  async getRaceControl(params: SessionScopedParams): Promise<RaceControlMessage[]> {
+    return openF1Fetch<RaceControlMessage[]>(`${BASE_URL}/race_control${toQueryString(params)}`);
   }
 }
