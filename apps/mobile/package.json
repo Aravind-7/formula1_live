@@ -8,6 +8,7 @@
     "@f1-dashboard/tokens": "workspace:*",
     "@f1-dashboard/types": "workspace:*",
     "@tanstack/react-query": "^5.101.4",
+    "d3-scale": "^4.0.2",
     "expo": "~57.0.10",
     "expo-constants": "~57.0.10",
     "expo-linking": "~57.0.5",
@@ -22,6 +23,7 @@
     "react-native-svg": "15.15.4"
   },
   "devDependencies": {
+    "@types/d3-scale": "^4.0.9",
     "@types/react": "~19.2.2",
     "babel-preset-expo": "^57.0.6",
     "prettier-plugin-tailwindcss": "0.5.11",
