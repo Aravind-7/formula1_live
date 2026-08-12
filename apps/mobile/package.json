@@ -1,0 +1,39 @@
+{
+  "name": "@f1-dashboard/mobile",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "dependencies": {
+    "@f1-dashboard/api-client": "workspace:*",
+    "@f1-dashboard/hooks": "workspace:*",
+    "@f1-dashboard/tokens": "workspace:*",
+    "@f1-dashboard/types": "workspace:*",
+    "@tanstack/react-query": "^5.101.4",
+    "expo": "~57.0.10",
+    "expo-constants": "~57.0.10",
+    "expo-linking": "~57.0.5",
+    "expo-router": "~57.0.12",
+    "expo-status-bar": "~57.0.1",
+    "nativewind": "^4.2.6",
+    "react": "19.2.3",
+    "react-native": "0.86.2",
+    "react-native-reanimated": "^4.5.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "~4.26.2",
+    "react-native-svg": "15.15.4"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.2",
+    "babel-preset-expo": "^57.0.6",
+    "prettier-plugin-tailwindcss": "0.5.11",
+    "tailwindcss": "3.4.17",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit"
+  },
+  "private": true
+}
