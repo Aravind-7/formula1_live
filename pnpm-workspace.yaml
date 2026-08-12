@@ -1,6 +1,7 @@
 packages:
   - "apps/*"
   - "packages/*"
+shamefullyHoist: true
 allowBuilds:
   unrs-resolver: true
 minimumReleaseAgeExclude:

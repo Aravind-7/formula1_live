@@ -15,6 +15,9 @@ config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, "node_modules"),
   path.resolve(workspaceRoot, "node_modules"),
 ];
-config.resolver.disableHierarchicalLookup = true;
+// NOT disableHierarchicalLookup: pnpm nests transitive deps (e.g.
+// nativewind's own dependency on react-native-css-interop) inside its
+// .pnpm store, reachable only via normal upward directory traversal —
+// disabling that breaks resolution of any nested package's own dependencies.
 
 module.exports = withNativeWind(config, { input: "./global.css" });
