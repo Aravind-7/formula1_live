@@ -1,4 +1,9 @@
 import type { Meeting, Session } from "@f1-dashboard/types";
+// Subpath import (not the main package barrel): this file is used by a
+// Server Component, and the main barrel transitively pulls in client-only
+// hooks (useEffect/useState), which Next.js correctly refuses to bundle
+// into server code — even though isSessionLive itself uses no hooks at all.
+import { isSessionLive } from "@f1-dashboard/hooks/sessionStatus";
 import type { SessionWithMeeting } from "./types";
 
 export function joinSessionsWithMeetings(
@@ -13,16 +18,6 @@ export function joinSessionsWithMeetings(
       meeting_name: meetingsByKey.get(session.meeting_key)?.meeting_name ?? session.location,
     }))
     .sort((a, b) => new Date(b.date_start).getTime() - new Date(a.date_start).getTime());
-}
-
-export function isSessionLive(
-  session: Pick<Session, "date_start" | "date_end"> | undefined,
-): boolean {
-  if (!session) return false;
-  const now = Date.now();
-  const start = new Date(session.date_start).getTime();
-  const end = session.date_end ? new Date(session.date_end).getTime() : undefined;
-  return start <= now && (end === undefined || end > now);
 }
 
 export function findLiveSession(

@@ -2,12 +2,17 @@
 
 import { useEffect, useRef } from "react";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useDrivers, usePositions, useSession, useSessionStore } from "@f1-dashboard/hooks";
+import {
+  isSessionLive,
+  useDrivers,
+  usePositions,
+  useSession,
+  useSessionStore,
+} from "@f1-dashboard/hooks";
 import { LiveIndicator } from "@/components/LiveIndicator";
 import { ReplayBadge } from "@/components/ReplayBadge";
 import { TrackMap } from "@/components/TrackMap";
 import { TrackOverlayPanel } from "@/components/TrackOverlayPanel";
-import { isSessionLive } from "@/lib/sessions";
 
 export default function TrackPage() {
   const params = useParams<{ sessionKey: string }>();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useSession, useSessionStore } from "@f1-dashboard/hooks";
+import { isSessionLive, useSession, useSessionStore } from "@f1-dashboard/hooks";
 import { FastestLapCard } from "@/components/FastestLapCard";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
 import { LiveIndicator } from "@/components/LiveIndicator";
@@ -9,7 +9,6 @@ import { ReplayBadge } from "@/components/ReplayBadge";
 import { TeamRadioFeed } from "@/components/TeamRadioFeed";
 import { TireStrategyCard } from "@/components/TireStrategyCard";
 import { WeatherWidget } from "@/components/WeatherWidget";
-import { isSessionLive } from "@/lib/sessions";
 import styles from "./page.module.css";
 
 const CARD_CLASS = "rounded-xl border border-border-hairline bg-bg-panel p-lg";

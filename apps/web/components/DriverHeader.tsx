@@ -1,8 +1,8 @@
 import type { Driver } from "@f1-dashboard/types";
 import { colors } from "@f1-dashboard/tokens";
+import { teamColor } from "@f1-dashboard/hooks";
 import { darkenHex } from "@/lib/color";
 import { formatGap } from "@/lib/format";
-import { teamColor } from "@/lib/telemetry";
 
 export interface DriverHeaderProps {
   driver: Driver | undefined;

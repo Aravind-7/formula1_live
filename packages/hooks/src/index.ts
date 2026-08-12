@@ -16,3 +16,5 @@ export * from "./useReplaySource";
 export * from "./usePitStops";
 export * from "./useRaceControl";
 export * from "./useDriverLocationHistory";
+export * from "./telemetry";
+export * from "./sessionStatus";

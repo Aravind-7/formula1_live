@@ -1,11 +1,13 @@
 import { notFound } from "next/navigation";
 import { OpenF1Client } from "@f1-dashboard/api-client";
+// Subpath import — see lib/sessions.ts for why: this Server Component can't
+// pull in the main hooks barrel, which transitively includes client-only code.
+import { driverMap, latestByDriver } from "@f1-dashboard/hooks/telemetry";
 import { PodiumList, type PodiumEntry } from "@/components/PodiumList";
 import { RecapTrackMapSection } from "@/components/RecapTrackMapSection";
 import { ScrollSection } from "@/components/ScrollSection";
 import { StatCallout } from "@/components/StatCallout";
 import { formatSessionDate } from "@/lib/format";
-import { driverMap, latestByDriver } from "@/lib/telemetry";
 
 // Curated list of completed races with known story beats — recap pages are
 // historical and never change, so pre-render exactly these at build time.

@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useDrivers, useTeamRadio } from "@f1-dashboard/hooks";
-import { driverMap } from "@/lib/telemetry";
+import { driverMap, useDrivers, useTeamRadio } from "@f1-dashboard/hooks";
 
 export function TeamRadioFeed({ sessionKey, live }: { sessionKey: number; live: boolean }) {
   const { data: clips } = useTeamRadio(sessionKey, { enabled: live });

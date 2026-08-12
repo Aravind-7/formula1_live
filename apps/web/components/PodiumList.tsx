@@ -1,5 +1,8 @@
 import type { Driver } from "@f1-dashboard/types";
-import { teamColor } from "@/lib/telemetry";
+// Subpath import — see lib/sessions.ts: PodiumList has no "use client" (it
+// doesn't need one) and is rendered by a Server Component, so it can't pull
+// in the main hooks barrel's client-only code.
+import { teamColor } from "@f1-dashboard/hooks/telemetry";
 
 export interface PodiumEntry {
   position: 1 | 2 | 3;

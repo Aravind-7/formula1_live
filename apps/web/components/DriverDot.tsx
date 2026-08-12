@@ -2,7 +2,7 @@
 
 import type { Driver } from "@f1-dashboard/types";
 import { colors } from "@f1-dashboard/tokens";
-import { teamColor } from "@/lib/telemetry";
+import { teamColor } from "@f1-dashboard/hooks";
 
 export interface DriverDotProps {
   driver: Driver;

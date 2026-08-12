@@ -1,9 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
-import { useDrivers, useIntervals, usePositions } from "@f1-dashboard/hooks";
+import {
+  driverMap,
+  latestByDriver,
+  teamColor,
+  useDrivers,
+  useIntervals,
+  usePositions,
+} from "@f1-dashboard/hooks";
 import { formatGap } from "@/lib/format";
-import { driverMap, latestByDriver, teamColor } from "@/lib/telemetry";
 
 export function LeaderboardTable({ sessionKey, live }: { sessionKey: number; live: boolean }) {
   const { data: positions } = usePositions(sessionKey, { enabled: live });

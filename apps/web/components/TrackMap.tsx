@@ -2,8 +2,15 @@
 
 import { useMemo, useRef, useState } from "react";
 import { scaleLinear } from "d3-scale";
-import { useDrivers, useLocations, usePositions, useSession, useTrackOutline } from "@f1-dashboard/hooks";
-import { driverMap, latestByDriver } from "@/lib/telemetry";
+import {
+  driverMap,
+  latestByDriver,
+  useDrivers,
+  useLocations,
+  usePositions,
+  useSession,
+  useTrackOutline,
+} from "@f1-dashboard/hooks";
 import { DriverDot } from "./DriverDot";
 import { DriverTooltip } from "./DriverTooltip";
 

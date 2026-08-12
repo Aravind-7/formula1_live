@@ -3,6 +3,10 @@
 import { useMemo } from "react";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
+  driverMap,
+  isSessionLive,
+  latestByDriver,
+  teamColor,
   useCarData,
   useDrivers,
   useIntervals,
@@ -19,8 +23,6 @@ import { LapTimeChart } from "@/components/LapTimeChart";
 import { LiveIndicator } from "@/components/LiveIndicator";
 import { ReplayBadge } from "@/components/ReplayBadge";
 import { TelemetryChart } from "@/components/TelemetryChart";
-import { isSessionLive } from "@/lib/sessions";
-import { driverMap, latestByDriver, teamColor } from "@/lib/telemetry";
 
 function fastestLapWindow(laps: Lap[] | undefined): { from: string; to: string } | undefined {
   const valid = (laps ?? []).filter((lap) => lap.lap_duration !== null && !lap.is_pit_out_lap);

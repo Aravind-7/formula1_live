@@ -3,10 +3,9 @@
 import { useMemo } from "react";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 import type { Lap } from "@f1-dashboard/types";
-import { useDrivers, useLaps } from "@f1-dashboard/hooks";
+import { driverMap, useDrivers, useLaps } from "@f1-dashboard/hooks";
 import { colors } from "@f1-dashboard/tokens";
 import { formatLapTime } from "@/lib/format";
-import { driverMap } from "@/lib/telemetry";
 
 export function FastestLapCard({ sessionKey, live }: { sessionKey: number; live: boolean }) {
   const { data: laps } = useLaps(sessionKey, undefined, { enabled: live });

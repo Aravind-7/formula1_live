@@ -2,8 +2,7 @@
 
 import { useMemo } from "react";
 import { scaleLinear } from "d3-scale";
-import { useDriverLocationHistory, useDrivers } from "@f1-dashboard/hooks";
-import { driverMap } from "@/lib/telemetry";
+import { driverMap, useDriverLocationHistory, useDrivers } from "@f1-dashboard/hooks";
 import { DriverDot } from "./DriverDot";
 
 const VIEWBOX_WIDTH = 1000;

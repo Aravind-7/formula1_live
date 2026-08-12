@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { Driver, Position } from "@f1-dashboard/types";
-import { driverMap, latestByDriver, teamColor } from "@/lib/telemetry";
+import { driverMap, latestByDriver, teamColor } from "@f1-dashboard/hooks";
 
 export interface TrackOverlayPanelProps {
   drivers: Driver[] | undefined;

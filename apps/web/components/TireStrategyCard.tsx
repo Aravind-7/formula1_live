@@ -2,8 +2,7 @@
 
 import { useMemo } from "react";
 import type { Stint, TyreCompound } from "@f1-dashboard/types";
-import { useDrivers, useStints } from "@f1-dashboard/hooks";
-import { driverMap } from "@/lib/telemetry";
+import { driverMap, useDrivers, useStints } from "@f1-dashboard/hooks";
 
 // Soft/medium/hard don't have dedicated tokens — reuse the existing signal
 // colors plus text-muted/accent-primary rather than introducing new hex.
