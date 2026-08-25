@@ -11,7 +11,11 @@ const SPARKLINE_WIDTH = 120;
 const SPARKLINE_HEIGHT = 32;
 
 export function FastestLapCard({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const { data: laps } = useLaps(sessionKey, undefined, { enabled: live });
+  // Always fetch — a finished session has lap data worth showing even when
+  // it's not live. `live` only controls whether we keep polling.
+  const { data: laps } = useLaps(sessionKey, undefined, {
+    refetchInterval: live ? undefined : false,
+  });
   const { data: drivers } = useDrivers(sessionKey);
   const driversByNumber = useMemo(() => driverMap(drivers), [drivers]);
 

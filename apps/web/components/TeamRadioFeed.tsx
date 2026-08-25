@@ -16,7 +16,9 @@ function TeamRadioSkeleton() {
 }
 
 export function TeamRadioFeed({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const clipsQuery = useTeamRadio(sessionKey, { enabled: live });
+  // Always fetch — a finished session has radio clips worth showing even
+  // when it's not live. `live` only controls whether we keep polling.
+  const clipsQuery = useTeamRadio(sessionKey, { refetchInterval: live ? undefined : false });
   const { data: drivers } = useDrivers(sessionKey);
   const driversByNumber = useMemo(() => driverMap(drivers), [drivers]);
 

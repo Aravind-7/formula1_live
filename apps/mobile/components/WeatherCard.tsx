@@ -3,7 +3,9 @@ import { useWeather } from "@f1-dashboard/hooks";
 import { Card } from "./Card";
 
 export function WeatherCard({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const { data } = useWeather(sessionKey, { enabled: live });
+  // Always fetch — a finished session has weather data worth showing even
+  // when it's not live. `live` only controls whether we keep polling.
+  const { data } = useWeather(sessionKey, { refetchInterval: live ? undefined : false });
   const latest = data?.at(-1);
 
   return (

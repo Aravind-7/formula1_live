@@ -5,7 +5,11 @@ import { driverMap, useDrivers, useTeamRadio } from "@f1-dashboard/hooks";
 import { Card } from "./Card";
 
 export function TeamRadioCard({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const { data: clips } = useTeamRadio(sessionKey, { enabled: live });
+  // Always fetch — a finished session has radio clips worth showing even
+  // when it's not live. `live` only controls whether we keep polling.
+  const { data: clips } = useTeamRadio(sessionKey, {
+    refetchInterval: live ? undefined : false,
+  });
   const { data: drivers } = useDrivers(sessionKey);
   const driversByNumber = useMemo(() => driverMap(drivers), [drivers]);
 

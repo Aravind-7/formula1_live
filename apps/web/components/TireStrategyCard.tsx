@@ -37,7 +37,9 @@ function TireStrategySkeleton() {
 }
 
 export function TireStrategyCard({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const stintsQuery = useStints(sessionKey, { enabled: live });
+  // Always fetch — a finished session has final stint data worth showing
+  // even when it's not live. `live` only controls whether we keep polling.
+  const stintsQuery = useStints(sessionKey, { refetchInterval: live ? undefined : false });
   const { data: drivers } = useDrivers(sessionKey);
   const driversByNumber = useMemo(() => driverMap(drivers), [drivers]);
   const stintsByDriver = useMemo(() => groupByDriver(stintsQuery.data), [stintsQuery.data]);

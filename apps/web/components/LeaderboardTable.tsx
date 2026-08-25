@@ -24,8 +24,12 @@ function LeaderboardSkeleton() {
 }
 
 export function LeaderboardTable({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const positionsQuery = usePositions(sessionKey, { enabled: live });
-  const { data: intervals } = useIntervals(sessionKey, { enabled: live });
+  // Always fetch — a finished session has final positions worth showing
+  // even when it's not live. `live` only controls whether we keep polling.
+  const positionsQuery = usePositions(sessionKey, { refetchInterval: live ? undefined : false });
+  const { data: intervals } = useIntervals(sessionKey, {
+    refetchInterval: live ? undefined : false,
+  });
   const { data: drivers } = useDrivers(sessionKey);
 
   const driversByNumber = useMemo(() => driverMap(drivers), [drivers]);
@@ -47,7 +51,7 @@ export function LeaderboardTable({ sessionKey, live }: { sessionKey: number; liv
           refetch: positionsQuery.refetch,
         }}
         skeleton={<LeaderboardSkeleton />}
-        emptyMessage="No live position data."
+        emptyMessage="No position data for this session."
         isEmpty={(data) => data.length === 0}
       >
         {(data) => (

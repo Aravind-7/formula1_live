@@ -25,7 +25,9 @@ function groupByDriver(stints: Stint[] | undefined): Map<number, Stint[]> {
 }
 
 export function TireStrategyCard({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const { data: stints } = useStints(sessionKey, { enabled: live });
+  // Always fetch — a finished session has final stint data worth showing
+  // even when it's not live. `live` only controls whether we keep polling.
+  const { data: stints } = useStints(sessionKey, { refetchInterval: live ? undefined : false });
   const { data: drivers } = useDrivers(sessionKey);
   const driversByNumber = useMemo(() => driverMap(drivers), [drivers]);
   const stintsByDriver = useMemo(() => groupByDriver(stints), [stints]);

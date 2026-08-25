@@ -15,7 +15,9 @@ function WeatherSkeleton() {
 }
 
 export function WeatherWidget({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const query = useWeather(sessionKey, { enabled: live });
+  // Always fetch — a finished session has weather data worth showing even
+  // when it's not live. `live` only controls whether we keep polling.
+  const query = useWeather(sessionKey, { refetchInterval: live ? undefined : false });
 
   return (
     <div className="flex h-full flex-col gap-sm">
