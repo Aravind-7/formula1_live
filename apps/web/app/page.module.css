@@ -1,0 +1,30 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "races"
+    "drivers"
+    "teams";
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      "races drivers"
+      "races teams";
+  }
+}
+
+.races {
+  grid-area: races;
+}
+
+.drivers {
+  grid-area: drivers;
+}
+
+.teams {
+  grid-area: teams;
+}

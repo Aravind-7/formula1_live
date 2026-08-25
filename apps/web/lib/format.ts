@@ -7,6 +7,14 @@ export function formatSessionDate(dateStart: string): string {
   });
 }
 
+export function formatSessionTime(dateStart: string): string {
+  return new Date(dateStart).toLocaleString("en-GB", {
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 export function formatGap(value: number | string | null | undefined): string {
   if (value === null || value === undefined) return "—";
   if (typeof value === "number") return `+${value.toFixed(3)}s`;

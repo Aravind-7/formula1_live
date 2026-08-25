@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import type { SessionWithMeeting } from "@/lib/types";
-import { SessionCard } from "./SessionCard";
+import { SessionPill } from "./SessionPill";
 
 const session: SessionWithMeeting = {
   session_key: 9161,
@@ -21,17 +21,15 @@ const session: SessionWithMeeting = {
   year: 2023,
 };
 
-describe("SessionCard", () => {
-  it("renders the meeting name, session type, and circuit/country", () => {
-    render(<SessionCard session={session} />);
+describe("SessionPill", () => {
+  it("renders the session name", () => {
+    render(<SessionPill session={session} />);
 
-    expect(screen.getByText("Singapore Grand Prix")).toBeInTheDocument();
     expect(screen.getByText("Qualifying")).toBeInTheDocument();
-    expect(screen.getByText("Marina Bay, Singapore")).toBeInTheDocument();
   });
 
   it("links to the correct dashboard route", () => {
-    render(<SessionCard session={session} />);
+    render(<SessionPill session={session} />);
 
     expect(screen.getByRole("link")).toHaveAttribute("href", "/dashboard/9161");
   });
