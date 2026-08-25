@@ -6,62 +6,71 @@ import type { Lap } from "@f1-dashboard/types";
 import { driverMap, useDrivers, useLaps } from "@f1-dashboard/hooks";
 import { colors } from "@f1-dashboard/tokens";
 import { formatLapTime } from "@/lib/format";
+import { DataState } from "./DataState";
+import { SkeletonBlock } from "./SkeletonBlock";
 
 export function FastestLapCard({ sessionKey, live }: { sessionKey: number; live: boolean }) {
-  const { data: laps } = useLaps(sessionKey, undefined, { enabled: live });
+  const lapsQuery = useLaps(sessionKey, undefined, { enabled: live });
   const { data: drivers } = useDrivers(sessionKey);
   const driversByNumber = useMemo(() => driverMap(drivers), [drivers]);
 
   const fastestLap = useMemo<Lap | undefined>(() => {
-    const valid = (laps ?? []).filter((lap) => lap.lap_duration !== null && !lap.is_pit_out_lap);
+    const valid = (lapsQuery.data ?? []).filter(
+      (lap) => lap.lap_duration !== null && !lap.is_pit_out_lap,
+    );
     return valid.reduce<Lap | undefined>((fastest, lap) => {
       if (!fastest || (lap.lap_duration ?? Infinity) < (fastest.lap_duration ?? Infinity)) {
         return lap;
       }
       return fastest;
     }, undefined);
-  }, [laps]);
+  }, [lapsQuery.data]);
 
   const sparkline = useMemo(() => {
     if (!fastestLap) return [];
-    return (laps ?? [])
+    return (lapsQuery.data ?? [])
       .filter((lap) => lap.driver_number === fastestLap.driver_number && lap.lap_duration !== null)
       .slice(-5)
       .map((lap) => ({ lap: lap.lap_number, duration: lap.lap_duration as number }));
-  }, [laps, fastestLap]);
+  }, [lapsQuery.data, fastestLap]);
 
   const driver = fastestLap ? driversByNumber.get(fastestLap.driver_number) : undefined;
 
   return (
     <div className="flex h-full flex-col gap-sm">
       <h3 className="text-sm font-medium text-text-muted">Fastest lap</h3>
-      {!fastestLap ? (
-        <p className="text-sm text-text-muted">No lap data yet.</p>
-      ) : (
-        <>
-          <div>
-            <p className="text-base font-medium text-accent-gold">
-              {driver?.name_acronym ?? fastestLap.driver_number}
-            </p>
-            <p className="text-sm text-text-primary">{formatLapTime(fastestLap.lap_duration)}</p>
-          </div>
-          {sparkline.length > 1 && (
-            <div className="h-12 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={sparkline}>
-                  <Line
-                    type="monotone"
-                    dataKey="duration"
-                    stroke={colors.accentGold}
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+      <DataState
+        query={lapsQuery}
+        skeleton={<SkeletonBlock className="h-12 w-full" />}
+        emptyMessage="No lap data yet."
+        isEmpty={() => fastestLap === undefined}
+      >
+        {() => (
+          <>
+            <div>
+              <p className="text-base font-medium text-accent-gold">
+                {driver?.name_acronym ?? fastestLap!.driver_number}
+              </p>
+              <p className="text-sm text-text-primary">{formatLapTime(fastestLap!.lap_duration)}</p>
             </div>
-          )}
-        </>
-      )}
+            {sparkline.length > 1 && (
+              <div className="h-12 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={sparkline}>
+                    <Line
+                      type="monotone"
+                      dataKey="duration"
+                      stroke={colors.accentGold}
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </>
+        )}
+      </DataState>
     </div>
   );
 }
