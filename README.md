@@ -1,5 +1,7 @@
 # F1 Dashboard
 
+[![CI](https://github.com/Aravind-7/formula1_live/actions/workflows/ci.yml/badge.svg)](https://github.com/Aravind-7/formula1_live/actions/workflows/ci.yml)
+
 A live and historical Formula 1 dashboard built on the [OpenF1](https://openf1.org) API. Shows a live-session banner when a session is in progress, and a browsable list of recent sessions otherwise.
 
 ## Stack
