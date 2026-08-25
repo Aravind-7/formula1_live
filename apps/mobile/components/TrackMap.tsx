@@ -46,12 +46,13 @@ export function TrackMap({
   const { data: positions } = usePositions(sessionKey, {
     refetchInterval: live ? 5000 : false,
   });
+  const outlineDriverNumber = drivers?.[0]?.driver_number;
   const { data: locations } = useLocations(sessionKey, {
     live,
     anchorDate: session?.date_end,
+    referenceDriverNumber: outlineDriverNumber,
   });
 
-  const outlineDriverNumber = drivers?.[0]?.driver_number;
   const { data: outlinePoints } = useTrackOutline(
     sessionKey,
     outlineDriverNumber,

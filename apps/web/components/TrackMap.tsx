@@ -43,17 +43,19 @@ export function TrackMap({
     refetchInterval: live ? 5000 : false,
   });
 
+  const outlineDriverNumber = drivers?.[0]?.driver_number;
+
   // Live cars: a short recent window across every driver (the endpoint
   // rejects unfiltered/whole-session requests outright).
   const locationsQuery = useLocations(sessionKey, {
     live,
     anchorDate: session?.date_end,
+    referenceDriverNumber: outlineDriverNumber,
   });
   const { data: locations } = locationsQuery;
 
   // Track shape: one driver's path over roughly a lap from session start —
   // fetched once, not polled, since the circuit itself never changes.
-  const outlineDriverNumber = drivers?.[0]?.driver_number;
   const outlineQuery = useTrackOutline(sessionKey, outlineDriverNumber, session?.date_start);
   const { data: outlinePoints } = outlineQuery;
 
