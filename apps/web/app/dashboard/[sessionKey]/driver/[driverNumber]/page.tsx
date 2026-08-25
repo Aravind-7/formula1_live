@@ -16,13 +16,17 @@ import {
   useSessionStore,
 } from "@f1-dashboard/hooks";
 import type { CarData, Driver, Lap } from "@f1-dashboard/types";
+import type { UseQueryResult } from "@tanstack/react-query";
 import { colors } from "@f1-dashboard/tokens";
+import { DataState } from "@/components/DataState";
 import { DriverCompareToggle } from "@/components/DriverCompareToggle";
 import { DriverHeader } from "@/components/DriverHeader";
 import { LapTimeChart } from "@/components/LapTimeChart";
 import { LiveIndicator } from "@/components/LiveIndicator";
 import { ReplayBadge } from "@/components/ReplayBadge";
+import { SkeletonBlock } from "@/components/SkeletonBlock";
 import { TelemetryChart } from "@/components/TelemetryChart";
+import { TelemetryChartSkeleton } from "@/components/TelemetryChartSkeleton";
 
 function fastestLapWindow(laps: Lap[] | undefined): { from: string; to: string } | undefined {
   const valid = (laps ?? []).filter((lap) => lap.lap_duration !== null && !lap.is_pit_out_lap);
@@ -43,8 +47,8 @@ function domainFor(key: "speed" | "rpm", ...datasets: (CarData[] | undefined)[])
 }
 
 interface DriverTelemetry {
-  laps: Lap[] | undefined;
-  carData: CarData[] | undefined;
+  lapsQuery: UseQueryResult<Lap[]>;
+  carDataQuery: UseQueryResult<CarData[]>;
 }
 
 function useDriverTelemetry(
@@ -54,18 +58,18 @@ function useDriverTelemetry(
 ): DriverTelemetry {
   // driverNumber undefined means "no compare driver selected" here — unlike
   // FastestLapCard's use of useLaps, it must NOT fall through to "all drivers".
-  const { data: laps } = useLaps(sessionKey, driverNumber, {
+  const lapsQuery = useLaps(sessionKey, driverNumber, {
     refetchInterval: live ? 10000 : false,
     enabled: Boolean(driverNumber),
   });
-  const window = fastestLapWindow(laps);
-  const { data: carData } = useCarData(sessionKey, {
+  const window = fastestLapWindow(lapsQuery.data);
+  const carDataQuery = useCarData(sessionKey, {
     driverNumber,
     dateFrom: window?.from,
     dateTo: window?.to,
   });
 
-  return { laps, carData };
+  return { lapsQuery, carDataQuery };
 }
 
 function DriverColumn({
@@ -84,15 +88,32 @@ function DriverColumn({
   rpmDomain: [number, number] | undefined;
 }) {
   const color = teamColor(driver) ?? colors.textMuted;
-  const carData = telemetry.carData ?? [];
 
   return (
     <div className="flex flex-col gap-lg rounded-xl border border-border-hairline bg-bg-panel p-lg">
       <DriverHeader driver={driver} position={position} gapToLeader={gapToLeader} />
-      <TelemetryChart metric="speed" data={carData} color={color} domain={speedDomain} />
-      <TelemetryChart metric="throttle_brake" data={carData} color={color} />
-      <TelemetryChart metric="rpm" data={carData} color={color} domain={rpmDomain} />
-      <LapTimeChart laps={telemetry.laps ?? []} />
+      <DataState
+        query={telemetry.carDataQuery}
+        skeleton={<TelemetryChartSkeleton count={3} />}
+        emptyMessage="No telemetry data yet."
+        isEmpty={(data) => data.length === 0}
+      >
+        {(carData) => (
+          <>
+            <TelemetryChart metric="speed" data={carData} color={color} domain={speedDomain} />
+            <TelemetryChart metric="throttle_brake" data={carData} color={color} />
+            <TelemetryChart metric="rpm" data={carData} color={color} domain={rpmDomain} />
+          </>
+        )}
+      </DataState>
+      <DataState
+        query={telemetry.lapsQuery}
+        skeleton={<SkeletonBlock className="h-24 w-full" />}
+        emptyMessage="No lap data yet."
+        isEmpty={(data) => data.length === 0}
+      >
+        {(laps) => <LapTimeChart laps={laps} />}
+      </DataState>
     </div>
   );
 }
@@ -125,10 +146,10 @@ export default function DriverDetailPage() {
 
   const isComparing = compareDriverNumber !== undefined;
   const speedDomain = isComparing
-    ? domainFor("speed", primaryTelemetry.carData, compareTelemetry.carData)
+    ? domainFor("speed", primaryTelemetry.carDataQuery.data, compareTelemetry.carDataQuery.data)
     : undefined;
   const rpmDomain = isComparing
-    ? domainFor("rpm", primaryTelemetry.carData, compareTelemetry.carData)
+    ? domainFor("rpm", primaryTelemetry.carDataQuery.data, compareTelemetry.carDataQuery.data)
     : undefined;
 
   const addCompare = (nextDriverNumber: number) => {
