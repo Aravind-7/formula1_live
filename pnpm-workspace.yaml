@@ -1,7 +1,13 @@
 packages:
   - "apps/*"
   - "packages/*"
-shamefullyHoist: true
+# NOT shamefullyHoist: that flattens the whole workspace to one shared
+# node_modules, which breaks apps/web (React 18) and apps/mobile (React 19)
+# needing different versions of the same peer (react, @tanstack/react-query)
+# resolved through packages/hooks, which has no node_modules of its own.
+# Metro only actually needs nativewind's own nested dependency hoisted.
+publicHoistPattern:
+  - "react-native-css-interop"
 allowBuilds:
   unrs-resolver: true
 minimumReleaseAgeExclude:
