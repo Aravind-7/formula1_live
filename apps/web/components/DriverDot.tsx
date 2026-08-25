@@ -42,7 +42,17 @@ export function DriverDot({
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
       onClick={onClick}
-      className="cursor-pointer transition-opacity"
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onClick();
+        }
+      }}
+      tabIndex={0}
+      role="button"
+      aria-label={`${driver.full_name}${isSelected ? ", selected" : ""}`}
+      aria-pressed={isSelected}
+      className="cursor-pointer transition-opacity focus:outline focus:outline-2 focus:outline-accent-gold"
     />
   );
 }

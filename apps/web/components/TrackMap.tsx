@@ -13,6 +13,8 @@ import {
 } from "@f1-dashboard/hooks";
 import { DriverDot } from "./DriverDot";
 import { DriverTooltip } from "./DriverTooltip";
+import { ErrorState } from "./ErrorState";
+import { TrackMapSkeleton } from "./TrackMapSkeleton";
 
 const VIEWBOX_WIDTH = 1000;
 const VIEWBOX_HEIGHT = 600;
@@ -43,19 +45,17 @@ export function TrackMap({
 
   // Live cars: a short recent window across every driver (the endpoint
   // rejects unfiltered/whole-session requests outright).
-  const { data: locations } = useLocations(sessionKey, {
+  const locationsQuery = useLocations(sessionKey, {
     live,
     anchorDate: session?.date_end,
   });
+  const { data: locations } = locationsQuery;
 
   // Track shape: one driver's path over roughly a lap from session start —
   // fetched once, not polled, since the circuit itself never changes.
   const outlineDriverNumber = drivers?.[0]?.driver_number;
-  const { data: outlinePoints } = useTrackOutline(
-    sessionKey,
-    outlineDriverNumber,
-    session?.date_start,
-  );
+  const outlineQuery = useTrackOutline(sessionKey, outlineDriverNumber, session?.date_start);
+  const { data: outlinePoints } = outlineQuery;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredDriverNumber, setHoveredDriverNumber] = useState<number | undefined>();
@@ -96,6 +96,24 @@ export function TrackMap({
 
     return { xScale, yScale, trackPath };
   }, [outlinePoints, latestLocations]);
+
+  if (locationsQuery.isLoading || outlineQuery.isLoading) {
+    return <TrackMapSkeleton />;
+  }
+
+  if (locationsQuery.isError || outlineQuery.isError) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-2xl">
+        <ErrorState
+          message="Couldn't load track data."
+          onRetry={() => {
+            locationsQuery.refetch();
+            outlineQuery.refetch();
+          }}
+        />
+      </div>
+    );
+  }
 
   if (!xScale || !yScale) {
     return (
