@@ -3,6 +3,7 @@ import { colors } from "@f1-dashboard/tokens";
 import { teamColor } from "@f1-dashboard/hooks";
 import { darkenHex } from "@/lib/color";
 import { formatGap } from "@/lib/format";
+import { DriverAvatar } from "./DriverAvatar";
 
 export interface DriverHeaderProps {
   driver: Driver | undefined;
@@ -20,6 +21,7 @@ export function DriverHeader({ driver, position, gapToLeader }: DriverHeaderProp
 
   return (
     <div className="flex items-center gap-md">
+      <DriverAvatar driver={driver} size={56} />
       <div>
         <h2 className="text-lg font-medium text-text-primary">{driver.full_name}</h2>
         <span

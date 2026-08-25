@@ -4,6 +4,7 @@ import { teamColor } from "@f1-dashboard/hooks";
 import { colors } from "@f1-dashboard/tokens";
 import { darkenHex } from "@/lib/color";
 import { formatGap } from "@/lib/format";
+import { DriverAvatar } from "./DriverAvatar";
 
 export interface DriverHeaderProps {
   driver: Driver | undefined;
@@ -21,6 +22,7 @@ export function DriverHeader({ driver, position, gapToLeader }: DriverHeaderProp
 
   return (
     <View className="flex-row items-center gap-md">
+      <DriverAvatar driver={driver} size={56} />
       <View className="flex-1">
         <Text className="text-lg font-medium text-text-primary">{driver.full_name}</Text>
         <View

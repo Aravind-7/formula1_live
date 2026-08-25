@@ -11,6 +11,9 @@ const nextConfig = {
     "@f1-dashboard/api-client",
     "@f1-dashboard/hooks",
   ],
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "media.formula1.com" }],
+  },
   webpack: (config) => {
     // packages/hooks accepts react ^18 || ^19 (needed so apps/mobile's React
     // 19 is satisfied too), so pnpm can resolve its @tanstack/react-query
