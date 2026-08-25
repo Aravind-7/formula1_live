@@ -12,7 +12,10 @@ const nextConfig = {
     "@f1-dashboard/hooks",
   ],
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "media.formula1.com" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "media.formula1.com" },
+      { protocol: "https", hostname: "flagcdn.com" },
+    ],
   },
   webpack: (config) => {
     // packages/hooks accepts react ^18 || ^19 (needed so apps/mobile's React

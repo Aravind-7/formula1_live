@@ -60,6 +60,7 @@ export function groupSessionsByMeeting(sessions: SessionWithMeeting[]): RaceWeek
         meeting_key: latest.meeting_key,
         meeting_name: latest.meeting_name,
         country_name: latest.country_name,
+        country_code: latest.country_code,
         circuit_short_name: latest.circuit_short_name,
         date_start: latest.date_start,
         sessions: chronological,

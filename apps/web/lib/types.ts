@@ -10,6 +10,7 @@ export interface RaceWeekend {
   meeting_key: number;
   meeting_name: string;
   country_name: string;
+  country_code: string;
   circuit_short_name: string;
   /** Latest session's date_start in the group — used to sort weekends by recency. */
   date_start: string;
