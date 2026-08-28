@@ -5,6 +5,7 @@ import { isSessionLive, useSession, useSessionStore } from "@f1-dashboard/hooks"
 import { FastestLapCard } from "@/components/FastestLapCard";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
 import { LiveIndicator } from "@/components/LiveIndicator";
+import { Logo } from "@/components/Logo";
 import { ReplayBadge } from "@/components/ReplayBadge";
 import { TeamRadioFeed } from "@/components/TeamRadioFeed";
 import { TireStrategyCard } from "@/components/TireStrategyCard";
@@ -23,6 +24,7 @@ export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-bg-base px-lg py-2xl">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-lg">
+        <Logo />
         <div className="flex items-center justify-between gap-md">
           <div className="flex items-center gap-sm">
             {live && <LiveIndicator />}

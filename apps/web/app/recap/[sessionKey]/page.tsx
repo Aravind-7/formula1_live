@@ -3,6 +3,7 @@ import { OpenF1Client } from "@f1-dashboard/api-client";
 // Subpath import — see lib/sessions.ts for why: this Server Component can't
 // pull in the main hooks barrel, which transitively includes client-only code.
 import { driverMap, latestByDriver } from "@f1-dashboard/hooks/telemetry";
+import { Logo } from "@/components/Logo";
 import { PodiumList, type PodiumEntry } from "@/components/PodiumList";
 import { RecapTrackMapSection } from "@/components/RecapTrackMapSection";
 import { ScrollSection } from "@/components/ScrollSection";
@@ -67,8 +68,11 @@ export default async function RecapPage({
   const totalLaps = laps.reduce((max, lap) => Math.max(max, lap.lap_number), 0);
 
   return (
-    <main className="min-h-screen bg-bg-base px-lg py-2xl">
-      <div className="mx-auto flex max-w-[700px] flex-col gap-[100px]">
+    <main className="min-h-screen bg-bg-base">
+      <div className="border-b border-border-hairline px-lg py-md">
+        <Logo />
+      </div>
+      <div className="mx-auto flex max-w-[700px] flex-col gap-[100px] px-lg py-2xl">
         <ScrollSection>
           <div className="flex flex-col items-center gap-sm text-center">
             <p className="text-sm text-text-muted">{formatSessionDate(session.date_start)}</p>

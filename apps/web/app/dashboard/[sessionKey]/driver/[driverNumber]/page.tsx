@@ -23,6 +23,7 @@ import { DriverCompareToggle } from "@/components/DriverCompareToggle";
 import { DriverHeader } from "@/components/DriverHeader";
 import { LapTimeChart } from "@/components/LapTimeChart";
 import { LiveIndicator } from "@/components/LiveIndicator";
+import { Logo } from "@/components/Logo";
 import { ReplayBadge } from "@/components/ReplayBadge";
 import { SkeletonBlock } from "@/components/SkeletonBlock";
 import { TelemetryChart } from "@/components/TelemetryChart";
@@ -162,6 +163,7 @@ export default function DriverDetailPage() {
   return (
     <main className="min-h-screen bg-bg-base px-lg py-2xl">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-lg">
+        <Logo />
         <div className="flex items-center justify-between gap-md">
           <div className="flex items-center gap-sm">
             {live && <LiveIndicator />}

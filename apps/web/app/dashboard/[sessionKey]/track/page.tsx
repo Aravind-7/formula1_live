@@ -10,6 +10,7 @@ import {
   useSessionStore,
 } from "@f1-dashboard/hooks";
 import { LiveIndicator } from "@/components/LiveIndicator";
+import { Logo } from "@/components/Logo";
 import { ReplayBadge } from "@/components/ReplayBadge";
 import { TrackMap } from "@/components/TrackMap";
 import { TrackOverlayPanel } from "@/components/TrackOverlayPanel";
@@ -52,12 +53,15 @@ export default function TrackPage() {
 
   return (
     <main className="flex h-screen flex-col bg-bg-base">
-      <div className="flex items-center gap-sm border-b border-border-hairline px-lg py-md">
-        {live && <LiveIndicator />}
-        {!live && replayMode && <ReplayBadge />}
-        <h1 className="text-lg font-medium text-text-primary">
-          {session?.session_name ?? "Loading session…"} — Track Map
-        </h1>
+      <div className="flex items-center gap-md border-b border-border-hairline px-lg py-md">
+        <Logo />
+        <div className="flex items-center gap-sm">
+          {live && <LiveIndicator />}
+          {!live && replayMode && <ReplayBadge />}
+          <h1 className="text-lg font-medium text-text-primary">
+            {session?.session_name ?? "Loading session…"} — Track Map
+          </h1>
+        </div>
       </div>
       <div ref={mapPanelRef} className="relative flex-1">
         <TrackMap

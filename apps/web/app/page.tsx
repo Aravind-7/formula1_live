@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { OpenF1Client } from "@f1-dashboard/api-client";
 import { DriversSection } from "@/components/DriversSection";
 import { LiveBanner } from "@/components/LiveBanner";
+import { Logo } from "@/components/Logo";
 import { RaceWeekendList } from "@/components/RaceWeekendList";
 import { ReplayModeToggle } from "@/components/ReplayModeToggle";
 import { SessionListSkeleton } from "@/components/SessionListSkeleton";
@@ -71,9 +72,7 @@ export default function Home() {
     <main className="min-h-screen bg-bg-base px-lg py-2xl">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-lg">
         <header>
-          <h1 className="text-xl font-medium text-text-primary">
-            F1 <span className="text-accent-gold">Dashboard</span>
-          </h1>
+          <Logo className="text-xl" />
           <p className="text-sm text-text-muted">Live and historical Formula 1 data</p>
         </header>
         <Suspense fallback={<SessionListSkeleton />}>
