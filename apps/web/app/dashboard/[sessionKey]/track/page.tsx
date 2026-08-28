@@ -9,6 +9,7 @@ import {
   useSession,
   useSessionStore,
 } from "@f1-dashboard/hooks";
+import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { LiveIndicator } from "@/components/LiveIndicator";
 import { Logo } from "@/components/Logo";
 import { ReplayBadge } from "@/components/ReplayBadge";
@@ -61,6 +62,9 @@ export default function TrackPage() {
           <h1 className="text-lg font-medium text-text-primary">
             {session?.session_name ?? "Loading session…"} — Track Map
           </h1>
+        </div>
+        <div className="ml-auto">
+          <HamburgerMenu />
         </div>
       </div>
       <div ref={mapPanelRef} className="relative flex-1">

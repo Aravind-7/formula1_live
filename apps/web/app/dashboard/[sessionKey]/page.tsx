@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { isSessionLive, useSession, useSessionStore } from "@f1-dashboard/hooks";
 import { FastestLapCard } from "@/components/FastestLapCard";
+import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { LeaderboardTable } from "@/components/LeaderboardTable";
 import { LiveIndicator } from "@/components/LiveIndicator";
 import { Logo } from "@/components/Logo";
@@ -24,7 +25,10 @@ export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-bg-base px-lg py-2xl">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-lg">
-        <Logo />
+        <div className="flex items-center justify-between gap-md">
+          <Logo />
+          <HamburgerMenu />
+        </div>
         <div className="flex items-center justify-between gap-md">
           <div className="flex items-center gap-sm">
             {live && <LiveIndicator />}

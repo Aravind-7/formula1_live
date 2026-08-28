@@ -3,19 +3,17 @@ import { OpenF1Client } from "@f1-dashboard/api-client";
 // Subpath import — see lib/sessions.ts for why: this Server Component can't
 // pull in the main hooks barrel, which transitively includes client-only code.
 import { driverMap, latestByDriver } from "@f1-dashboard/hooks/telemetry";
+import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { Logo } from "@/components/Logo";
 import { PodiumList, type PodiumEntry } from "@/components/PodiumList";
 import { RecapTrackMapSection } from "@/components/RecapTrackMapSection";
 import { ScrollSection } from "@/components/ScrollSection";
 import { StatCallout } from "@/components/StatCallout";
+import { CURATED_RECAP_SESSIONS } from "@/lib/curatedRecaps";
 import { formatSessionDate } from "@/lib/format";
 
-// Curated list of completed races with known story beats — recap pages are
-// historical and never change, so pre-render exactly these at build time.
-const CURATED_SESSION_KEYS = [9472, 9488, 9507];
-
 export function generateStaticParams() {
-  return CURATED_SESSION_KEYS.map((sessionKey) => ({ sessionKey: String(sessionKey) }));
+  return CURATED_RECAP_SESSIONS.map(({ sessionKey }) => ({ sessionKey: String(sessionKey) }));
 }
 
 export default async function RecapPage({
@@ -69,8 +67,9 @@ export default async function RecapPage({
 
   return (
     <main className="min-h-screen bg-bg-base">
-      <div className="border-b border-border-hairline px-lg py-md">
+      <div className="flex items-center justify-between border-b border-border-hairline px-lg py-md">
         <Logo />
+        <HamburgerMenu />
       </div>
       <div className="mx-auto flex max-w-[700px] flex-col gap-[100px] px-lg py-2xl">
         <ScrollSection>

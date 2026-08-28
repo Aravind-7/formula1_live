@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { OpenF1Client } from "@f1-dashboard/api-client";
 import { DriversSection } from "@/components/DriversSection";
+import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { LiveBanner } from "@/components/LiveBanner";
 import { Logo } from "@/components/Logo";
 import { RaceWeekendList } from "@/components/RaceWeekendList";
@@ -71,9 +72,12 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-bg-base px-lg py-2xl">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-lg">
-        <header>
-          <Logo className="text-xl" />
-          <p className="text-sm text-text-muted">Live and historical Formula 1 data</p>
+        <header className="flex items-start justify-between gap-md">
+          <div>
+            <Logo className="text-xl" />
+            <p className="text-sm text-text-muted">Live and historical Formula 1 data</p>
+          </div>
+          <HamburgerMenu />
         </header>
         <Suspense fallback={<SessionListSkeleton />}>
           <LandingContent />
