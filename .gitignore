@@ -43,3 +43,7 @@ playwright/.cache/
 
 # planning docs (not part of the shipped repo)
 stage-*.md
+
+# AI assistant instructions (not part of the shipped repo)
+CLAUDE.md
+AGENTS.md
