@@ -6,7 +6,7 @@ A live and historical Formula 1 dashboard built on the [OpenF1](https://openf1.o
 
 ## Live
 
-- **Web:** _add your Vercel URL here after deploying (see [Deployment](#deployment))_
+- **Web:** [formula1-live.vercel.app](https://formula1-live.vercel.app/)
 - **Mobile:** _add a TestFlight/Play link or an Expo Go QR code here after building (see [Deployment](#deployment))_
 
 ## Features
