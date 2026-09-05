@@ -47,3 +47,6 @@ stage-*.md
 # AI assistant instructions (not part of the shipped repo)
 CLAUDE.md
 AGENTS.md
+
+# graphify knowledge-graph output (local analysis artifact, not part of the shipped repo)
+graphify-out/
