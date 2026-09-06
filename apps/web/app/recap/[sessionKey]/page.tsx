@@ -24,14 +24,22 @@ export default async function RecapPage({
   const sessionKey = Number(params.sessionKey);
   const client = new OpenF1Client();
 
-  const [session, drivers, positions, pitStops, raceControl, laps] = await Promise.all([
-    client.getSessionByKey(sessionKey),
-    client.getDrivers({ session_key: sessionKey }),
-    client.getPositions({ session_key: sessionKey }),
-    client.getPitStops({ session_key: sessionKey }),
-    client.getRaceControl({ session_key: sessionKey }),
-    client.getLaps({ session_key: sessionKey }),
-  ]);
+  // OpenF1 restricts all access (including historical data) to authenticated
+  // users while any session is live — a transient upstream failure here must
+  // not fail the entire production build for every curated recap page.
+  let session, drivers, positions, pitStops, raceControl, laps;
+  try {
+    [session, drivers, positions, pitStops, raceControl, laps] = await Promise.all([
+      client.getSessionByKey(sessionKey),
+      client.getDrivers({ session_key: sessionKey }),
+      client.getPositions({ session_key: sessionKey }),
+      client.getPitStops({ session_key: sessionKey }),
+      client.getRaceControl({ session_key: sessionKey }),
+      client.getLaps({ session_key: sessionKey }),
+    ]);
+  } catch {
+    notFound();
+  }
 
   if (!session) {
     notFound();
